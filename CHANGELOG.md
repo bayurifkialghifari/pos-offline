@@ -4,12 +4,6 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
-### Fixed
-
-- Generate release checksums with canonical asset filenames that the in-app updater can verify.
-- Recover browser cart edits after reload interrupts an IndexedDB save, and clear the local draft after a successful backup restore.
-- Preserve the previous browser database until its replacement commits atomically, so an interrupted save cannot erase products or transactions.
-
 ## [0.1.0] - 2026-10-27
 
 ### Added
@@ -24,3 +18,9 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 - Tag-triggered signed Android APK and AAB releases with checksums.
 - Product and report CSV/XLSX import/export with formula and archive validation.
 - A charcoal and lime responsive interface with blue money and green/red cashflow.
+
+### Fixed
+
+- Generate release checksums with canonical asset filenames that the in-app updater can verify.
+- Recover browser cart edits after reload interrupts an IndexedDB save, and clear the local draft after a successful backup restore.
+- Preserve the previous browser database until its replacement commits atomically, so an interrupted save cannot erase products or transactions.
