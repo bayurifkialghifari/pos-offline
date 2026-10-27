@@ -118,6 +118,14 @@ test("charges exact nominal, restores a draft, holds and completes an Open Bill"
     .click()
   await expect(page.getByRole("main")).toContainText("0,667 kg")
   await expect(page.getByRole("main")).toContainText("10.000")
+  await page.goto("/")
+  const summary = page.getByRole("article", { name: "Penjualan hari ini" })
+  await expect(summary).toContainText(/Rp\s*10\.000/)
+  await expect(summary).toContainText("1 transaksi selesai")
+  await expect(summary).toContainText(/Rata-rata\s*Rp\s*10\.000/)
+  const activity = page.getByRole("region", { name: "Aktivitas terbaru" })
+  await expect(activity.getByRole("link").first()).toContainText("10.000")
+  await expect(activity.getByRole("link").first()).toContainText("Selesai")
 })
 
 test("quantity dialog traps focus and returns focus on Escape", async ({
