@@ -11,3 +11,5 @@ Installed Android version/browser package version, bundled English changelog, ma
 ## Acceptance checks
 
 Start/sell offline without requests. Manual check offline shows retryable feedback. On hardware, reject tampered/wrong-signer/older APKs and install newer same-signer APK after permission/confirmation.
+
+The updater tests exercise the real release parser and HTTP client with controlled responses and native version information. They cover newer/same/older versions, missing releases, invalid or foreign assets, GitHub errors, offline retries and timeouts. Browser E2E covers checks only after clicking, displayed release notes, retry after failure and rejected foreign assets at phone and desktop widths. All simulated versions stay in tests.
