@@ -26,6 +26,26 @@ const newerRelease = {
   ],
 } as const
 
+test("checks manually inside the settings About dialog", async ({ page }) => {
+  let requests = 0
+  await page.route(endpoint, async (route) => {
+    requests++
+    await route.fulfill({ json: newerRelease })
+  })
+  await page.goto("/settings")
+  await page.getByRole("button", { name: /Tentang aplikasi/ }).click()
+  const dialog = page.getByRole("dialog", { name: "Tentang aplikasi" })
+  await expect(
+    dialog.getByRole("button", { name: "Periksa pembaruan" }),
+  ).toBeEnabled()
+  expect(requests).toBe(0)
+  await dialog.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await expect(dialog).toContainText("Tersedia v0.1.1")
+  await expect(dialog).toContainText(newerRelease.body)
+  expect(requests).toBe(1)
+  await expect(page).toHaveURL(/settings$/)
+})
+
 test("checks only on request and does not offer the installed version", async ({
   page,
 }) => {

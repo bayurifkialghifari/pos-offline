@@ -53,6 +53,25 @@ APK verification passed with one RSA-4096 signer and APK Signature Scheme v2. AA
 
 Manual QA used an owned browser and fresh profile. The About page displayed version 0.1.0 and its bundled changelog, made no GitHub request before clicking, then received HTTP 200 from the real latest-release endpoint after clicking Periksa pembaruan. The UI correctly displayed Belum ada versi lebih baru yang tersedia. Newer-release notes, offline retry and foreign-asset errors were verified with controlled browser E2E responses. These checks prove release discovery and downloads; they do not prove Android installer or installed-package verification behavior on a device.
 
+## Dashboard and Settings bento revision
+
+The revision retains version 0.1.0 and records its changes under Unreleased. No new release tag is created.
+
+- Quality: Prettier, ESLint, Nuxt types, documentation checks, 37 Vitest tests and 4 Node script tests passed. The complete browser suite passed 28 checks on phone and desktop, including Home shortcut order, unit/backup navigation, populated sales, About focus trapping and restoration, and manual update discovery inside the modal.
+- Manual UI evidence: fresh captures cover Home, Reports, the Settings footer, the About modal and the standalone About route at 390, 1440 and 1920 pixels in both themes. Populated Home/Reports also cover 320, 390 and 1440 pixels, with top/end scroll positions and Home metric details. The owned browser uses fresh task profiles; production data is untouched.
+- Data: a Rp10,000 nominal sale, Rp50,000 opening cash and Rp5,000 manual expense show sales/income of Rp10,000, an average of Rp10,000 and net cash movement of Rp5,000. A second Rp987,654,321 sale produces total sales/income of Rp987,664,321, two completed transactions, a rounded average of Rp493,832,161 and net cash movement of Rp987,659,321. Long store names and these totals remain readable on narrow screens.
+- Android: static generation, Capacitor sync and a native debug APK build passed with JDK 21 and Android SDK 36. The ARM host uses the same temporary AAPT2 wrapper described above. This verifies compilation and packaging; physical installation remains a user acceptance check.
+
+| Requested behavior                                               | Self-review evidence                                                                      |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Store management precedes analytics; units sit beside Products   | Home DOM order, both-theme captures and navigation E2E                                    |
+| Icon-bearing bento cards use actual business totals              | Empty/populated captures, completed-sale E2E and recorded real UI transactions            |
+| Full backup card is last on Home and near the bottom of Settings | End captures and real navigation to export/import                                         |
+| About opens a modal from the bottom Settings button              | Phone sheet/desktop dialog captures, keyboard and manual-updater E2E                      |
+| Both themes preserve scrolling and narrow layouts                | Measured viewport/document widths, scrolled captures and dark native scrollbar inspection |
+
+These are implementation self-review and browser/build results. No independent-review pass or physical Android acceptance is claimed.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.

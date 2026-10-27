@@ -7,6 +7,7 @@ import { Switch } from "@/components/atoms/ui/switch"
 import BottomSheet from "@/components/molecules/common/BottomSheet.vue"
 import PinPad from "@/components/molecules/common/PinPad.vue"
 import AppHeader from "@/components/organisms/layout/AppHeader.vue"
+import SettingsActions from "@/components/organisms/settings/SettingsActions.vue"
 import { downscale, pickImage } from "@/lib/image"
 import { decodeQrFromDataUrl, encodeQrToDataUrl, isValidQris } from "@/lib/qris"
 import { APP_VERSION } from "@/lib/version"
@@ -29,7 +30,7 @@ import {
 } from "lucide-vue-next"
 import { storeToRefs } from "pinia"
 import { onMounted, ref } from "vue"
-import { RouterLink, useRouter } from "vue-router"
+import { useRouter } from "vue-router"
 
 const settings = useSettingsStore()
 const media = useMediaStore()
@@ -203,33 +204,6 @@ function lockNow() {
   <div>
     <AppHeader title="Setelan" />
     <div class="space-y-5 p-4">
-      <div class="grid gap-3 sm:grid-cols-3">
-        <RouterLink
-          to="/settings/units"
-          class="rounded-2xl border border-border bg-card p-4"
-          ><p class="font-semibold">Satuan produk</p>
-          <p class="mt-1 text-sm text-muted-foreground">
-            Kelola kg, liter, buah, dan satuan lain
-          </p></RouterLink
-        >
-        <RouterLink
-          to="/settings/backup"
-          class="rounded-2xl border border-border bg-card p-4"
-          ><p class="font-semibold">Cadangan data</p>
-          <p class="mt-1 text-sm text-muted-foreground">
-            Ekspor, import, dan pindah perangkat
-          </p></RouterLink
-        >
-        <RouterLink
-          to="/settings/about"
-          class="rounded-2xl border border-border bg-card p-4"
-          ><p class="font-semibold">Tentang aplikasi</p>
-          <p class="mt-1 text-sm text-muted-foreground">
-            Versi, changelog, dan pembaruan
-          </p></RouterLink
-        >
-      </div>
-
       <section class="space-y-3">
         <p
           class="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
@@ -502,11 +476,9 @@ function lockNow() {
                   v-for="bg in SPLASH_BGS"
                   :key="bg.id"
                   type="button"
-                  class="relative overflow-hidden rounded-xl border p-1 transition"
+                  class="relative overflow-hidden rounded-xl border border-border p-1 transition-colors"
                   :class="
-                    splashBg === bg.id
-                      ? 'border-primary ring-2 ring-primary/30'
-                      : 'border-border'
+                    splashBg === bg.id ? 'bg-primary/20' : 'hover:bg-accent'
                   "
                   @click="settings.setSplash({ bg: bg.id })"
                 >
@@ -528,6 +500,8 @@ function lockNow() {
           </CardContent>
         </Card>
       </section>
+
+      <SettingsActions />
 
       <div
         class="flex items-center justify-center gap-2 pb-2 text-xs text-muted-foreground"

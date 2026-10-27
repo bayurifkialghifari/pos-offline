@@ -26,9 +26,9 @@ At 768 px and above use a fixed 224 px sidebar and one scrolling main surface. B
 
 Home begins with store management, with Products and Product units adjacent and a compact backup shortcut. Analytics follow in a responsive bento: a larger lime sales tile, cashflow tiles, a wide trend panel and a narrow cashier/activity column. Use explicit grid placement in DOM order; do not use dense packing. The structural reference is StyleGallery's twelve-span-grid pattern, adapted to a twelve-column desktop grid and ordinary stacked phone flow. Main remains the only scrolling surface. The final section is a backup card with its own heading, icon, title, description and an icon-bearing button below.
 
-Dashboard cards use 20–24 px radii, 16–24 px gaps/padding, 40–48 px icon wells and 26–36 px tabular amounts. Icon wells use existing semantic inks at low opacity; primary tiles use lime with charcoal text. Zero-data screens show actual zero totals and useful links, never fictional growth.
+Dashboard cards use 20–24 px radii, 16–24 px gaps/padding, 40–48 px icon wells and 26–36 px tabular amounts. Icon wells use existing semantic inks at low opacity; primary tiles use lime with charcoal text. Zero-data screens show actual zero totals and useful links, never fictional growth. Settings ends with the same backup card and an About button. About opens a focus-trapped BottomSheet on phones and a centered, scrollable dialog on desktop; the existing About route uses the same content.
 
-Phone store shortcuts use compact horizontal cards with 36 px icon wells; cash tiles remain paired below the full-width sales tile.
+Phone store shortcuts use compact horizontal cards with 36 px icon wells; cash tiles remain paired below the full-width sales tile. Native scrollbars and controls follow the selected light/dark color scheme.
 
 ## Interaction and states
 

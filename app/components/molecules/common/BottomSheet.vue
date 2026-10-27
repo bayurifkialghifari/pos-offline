@@ -9,7 +9,7 @@ import {
   DialogRoot,
   DialogTitle,
 } from "reka-ui"
-defineProps<{ open: boolean; title?: string }>()
+defineProps<{ open: boolean; title?: string; desktopCentered?: boolean }>()
 const emit = defineEmits<{ "update:open": [value: boolean] }>()
 </script>
 <template>
@@ -18,6 +18,11 @@ const emit = defineEmits<{ "update:open": [value: boolean] }>()
       <DialogOverlay class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" />
       <DialogContent
         class="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[88dvh] max-w-md flex-col rounded-t-3xl border border-border bg-background pb-[env(safe-area-inset-bottom)] shadow-2xl outline-none"
+        :class="
+          desktopCentered
+            ? 'md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:w-full md:max-w-xl md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-3xl'
+            : ''
+        "
       >
         <div class="flex shrink-0 items-center justify-between gap-3 px-5 py-3">
           <DialogTitle class="text-base font-semibold">{{

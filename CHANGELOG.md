@@ -8,7 +8,8 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 - Redesign Home as a responsive bento with store shortcuts above icon-bearing sales, cashflow, trend, cashier and activity cards.
 - Keep large monetary totals readable in narrow dashboard and report cards.
-- Add a Product units shortcut beside Products on Home and place an explicit backup card last on Home.
+- Move product units beside Products on Home and place an explicit backup card at the bottom of Home and Settings.
+- Open About from a bottom Settings button in a responsive modal with shared version, changelog and manual updater content.
 
 ## [0.1.0] - 2026-10-27
 

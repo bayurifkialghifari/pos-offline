@@ -4,6 +4,8 @@
 
 Installed Android version/browser package version, bundled English changelog, manual GitHub latest-stable check and release notes. Native updates validate repository URL/redirects, SHA-256, package, installed signer and exact increasing version/code before interactive installer.
 
+The About button at the bottom of Settings opens a modal with the same content as the standalone About route. Opening the modal does not check GitHub; update discovery still requires pressing the check button.
+
 ## Implementation
 
 [app/screens/settings/AboutPage.vue](../app/screens/settings/AboutPage.vue).
