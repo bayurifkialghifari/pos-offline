@@ -1,0 +1,9 @@
+node_modules
+.nuxt
+.output
+android
+coverage
+test-results
+playwright-report
+public/assets/sql-wasm.wasm
+bun.lock

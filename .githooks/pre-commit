@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+bun run format
+bun run format:check
+git diff --cached --name-only -z | xargs -0 -r git diff --exit-code --
