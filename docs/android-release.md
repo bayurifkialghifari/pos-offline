@@ -12,6 +12,8 @@ Main/PR quality/static/browser checks and Android debug APK. Stable tags validat
 
 Validate node scripts/release-metadata.mjs v0.1.0 /tmp/pos-offline-notes.md. Push a requested stable tag and inspect APK/AAB/checksum assets.
 
+Checksum entries use bare asset filenames, without a ./ prefix. The owning release test executes the workflow's checksum command on temporary APK/AAB fixtures and checks that the updater accepts its output.
+
 ## Signing setup
 
 The android-release environment requires ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and ANDROID_KEY_PASSWORD. Upload secrets with gh secret set --repo bayurifkialghifari/pos-offline --env android-release. Privately back up the persistent JKS/passwords outside Git. Debug installs have a different signer and cannot upgrade to a production-key APK directly.

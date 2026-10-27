@@ -6,6 +6,7 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ### Fixed
 
+- Generate release checksums with canonical asset filenames that the in-app updater can verify.
 - Recover browser cart edits after reload interrupts an IndexedDB save, and clear the local draft after a successful backup restore.
 - Preserve the previous browser database until its replacement commits atomically, so an interrupted save cannot erase products or transactions.
 
