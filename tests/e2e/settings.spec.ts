@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+import packageInfo from "../../package.json" with { type: "json" }
 
 test("opens About from the bottom of settings, traps focus and restores it", async ({
   page,
@@ -12,7 +13,7 @@ test("opens About from the bottom of settings, traps focus and restores it", asy
   const dialog = page.getByRole("dialog", { name: "Tentang aplikasi" })
   await expect(dialog).toBeVisible()
   await expect(page).toHaveURL(/settings$/)
-  await expect(dialog).toContainText("Versi 0.1.0")
+  await expect(dialog).toContainText("Versi " + packageInfo.version)
   await expect(dialog).toContainText("Changelog bawaan")
   for (let index = 0; index < 6; index++) {
     await page.keyboard.press("Tab")

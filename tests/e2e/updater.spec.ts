@@ -3,25 +3,25 @@ import packageInfo from "../../package.json" with { type: "json" }
 
 const endpoint =
   "https://api.github.com/repos/bayurifkialghifari/pos-offline/releases/latest"
+const newerTag =
+  "v" +
+  packageInfo.version.replace(/\d+$/, (patch) => String(Number(patch) + 1))
 const newerRelease = {
-  tag_name: "v0.1.1",
+  tag_name: newerTag,
   draft: false,
   prerelease: false,
   body: "Release notes from the update test fixture.",
-  html_url:
-    "https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.1",
+  html_url: `https://github.com/bayurifkialghifari/pos-offline/releases/tag/${newerTag}`,
   assets: [
     {
-      name: "pos-offline-v0.1.1.apk",
+      name: `pos-offline-${newerTag}.apk`,
       size: 1024,
-      browser_download_url:
-        "https://github.com/bayurifkialghifari/pos-offline/releases/download/v0.1.1/pos-offline-v0.1.1.apk",
+      browser_download_url: `https://github.com/bayurifkialghifari/pos-offline/releases/download/${newerTag}/pos-offline-${newerTag}.apk`,
     },
     {
       name: "SHA256SUMS.txt",
       size: 200,
-      browser_download_url:
-        "https://github.com/bayurifkialghifari/pos-offline/releases/download/v0.1.1/SHA256SUMS.txt",
+      browser_download_url: `https://github.com/bayurifkialghifari/pos-offline/releases/download/${newerTag}/SHA256SUMS.txt`,
     },
   ],
 } as const
@@ -40,7 +40,7 @@ test("checks manually inside the settings About dialog", async ({ page }) => {
   ).toBeEnabled()
   expect(requests).toBe(0)
   await dialog.getByRole("button", { name: "Periksa pembaruan" }).click()
-  await expect(dialog).toContainText("Tersedia v0.1.1")
+  await expect(dialog).toContainText("Tersedia " + newerTag)
   await expect(dialog).toContainText(newerRelease.body)
   expect(requests).toBe(1)
   await expect(page).toHaveURL(/settings$/)
@@ -59,9 +59,9 @@ test("checks only on request and does not offer the installed version", async ({
         tag_name: tag,
         assets: newerRelease.assets.map((asset) => ({
           ...asset,
-          name: asset.name.replace("v0.1.1", tag),
+          name: asset.name.replace(newerTag, tag),
           browser_download_url: asset.browser_download_url.replaceAll(
-            "v0.1.1",
+            newerTag,
             tag,
           ),
         })),
@@ -91,7 +91,7 @@ test("shows newer release notes after a manual update check", async ({
 
   await page.getByRole("button", { name: "Periksa pembaruan" }).click()
 
-  await expect(page.getByRole("main")).toContainText("Tersedia v0.1.1")
+  await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
   await expect(page.getByRole("main")).toContainText(newerRelease.body)
   await expect(
     page.getByRole("button", { name: "Unduh & pasang" }),
@@ -114,7 +114,7 @@ test("allows another manual check after an offline failure", async ({
   await page.getByRole("button", { name: "Periksa pembaruan" }).click()
 
   await expect(page.getByRole("alert")).toHaveCount(0)
-  await expect(page.getByRole("main")).toContainText("Tersedia v0.1.1")
+  await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
 })
 
 test("rejects a release whose assets are outside the configured repository", async ({
@@ -139,5 +139,5 @@ test("rejects a release whose assets are outside the configured repository", asy
   await page.getByRole("button", { name: "Periksa pembaruan" }).click()
 
   await expect(page.getByRole("alert")).toBeVisible()
-  await expect(page.getByRole("main")).not.toContainText("Tersedia v0.1.1")
+  await expect(page.getByRole("main")).not.toContainText("Tersedia " + newerTag)
 })

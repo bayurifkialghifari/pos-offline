@@ -10,7 +10,7 @@ Main/PR quality/static/browser checks and Android debug APK. Stable tags validat
 
 ## Acceptance checks
 
-Validate node scripts/release-metadata.mjs v0.1.0 /tmp/pos-offline-notes.md. Push a requested stable tag and inspect APK/AAB/checksum assets.
+Validate node scripts/release-metadata.mjs v0.1.1 /tmp/pos-offline-notes.md. Push a requested stable tag and inspect APK/AAB/checksum assets.
 
 Checksum entries use bare asset filenames, without a ./ prefix. The owning release test executes the workflow's checksum command on temporary APK/AAB fixtures and checks that the updater accepts its output.
 

@@ -4,6 +4,8 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-27
+
 ### Changed
 
 - Redesign Home as a responsive bento with store shortcuts above icon-bearing sales, cashflow, trend, cashier and activity cards.
