@@ -4,6 +4,10 @@
 
 A client-only Nuxt SPA is packaged by Capacitor from .output/public; no server URL is configured. Bootstrap initializes SQLite/schema/seeds and loads settings/cart. Android uses native SQLite; browser preview uses jeep-sqlite/sql.js persisted to IndexedDB.
 
+The pinned jeep-sqlite 2.8.0 loader runtime and collection source are patched by Bun to overwrite the database with one IndexedDB transaction. The upstream remove-before-save sequence is removed so an interrupted replacement retains the previous committed database. Keep the patch when upgrading this dependency until the same durability guarantee is verified upstream.
+
+Browser cart mutations write a synchronous localStorage recovery journal before their asynchronous SQLite/IndexedDB save. Bootstrap validates and replays interrupted journals; a completed save clears only its own current revision. Backup replacement drains pending cart writes and clears the draft and journal. This device-local recovery state is excluded from portable business data.
+
 | Layer                  | Ownership                                                 |
 | ---------------------- | --------------------------------------------------------- |
 | app/pages              | Nuxt route wrappers and metadata                          |

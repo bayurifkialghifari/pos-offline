@@ -11,15 +11,36 @@ async function createRice(page: Page) {
   await expect(page).toHaveURL(/products$/)
 }
 
-async function addNominal(page: Page) {
+async function addNominal(page: Page, interruptSave = false) {
   await page.goto("/pos")
   await page.getByRole("button", { name: /Beras Premium/ }).click()
   const dialog = page.getByRole("dialog")
   await dialog.getByRole("button", { name: "Nominal rupiah" }).click()
   await dialog.getByLabel("Berapa rupiah?").fill("10000")
   await expect(dialog).toContainText("0,667 kg")
+  if (interruptSave) {
+    await page.evaluate(() => {
+      const put = IDBObjectStore.prototype.put
+      IDBObjectStore.prototype.put = function (value, key) {
+        if (this.transaction.db.name !== "jeepSqliteStore")
+          return put.call(this, value, key)
+        document.documentElement.dataset.cartSaveBlocked = "true"
+        const keepActive = () => {
+          const request = this.get("posofflineSQLite.db")
+          request.onsuccess = keepActive
+        }
+        keepActive()
+        return this.get("posofflineSQLite.db")
+      }
+    })
+  }
   await dialog.getByRole("button", { name: "Tambah ke keranjang" }).click()
   await expect(dialog).toBeHidden()
+  if (interruptSave)
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-cart-save-blocked",
+      "true",
+    )
 }
 
 test("starts with local SQLite and makes no external startup requests", async ({
@@ -55,7 +76,7 @@ test("charges exact nominal, restores a draft, holds and completes an Open Bill"
   page,
 }) => {
   await createRice(page)
-  await addNominal(page)
+  await addNominal(page, true)
   await page.reload()
   await page.getByRole("button", { name: /Lihat Keranjang/ }).click()
   let dialog = page.getByRole("dialog")
@@ -150,7 +171,7 @@ test("exports a portable archive and cancellation or invalid import keeps the ca
   await expect(page.getByRole("main")).toContainText("10 kg")
 })
 
-test("restores products and custom units in a fresh device profile", async ({
+test("restores products and custom units on another device and clears its cart", async ({
   page,
   browser,
   baseURL,
@@ -172,6 +193,12 @@ test("restores products and custom units in a fresh device profile", async ({
   const target = await browser.newContext({ baseURL })
   try {
     const device = await target.newPage()
+    await createRice(device)
+    await addNominal(device)
+    await device.reload()
+    await expect(
+      device.getByRole("button", { name: /Lihat Keranjang/ }),
+    ).toBeVisible()
     await device.goto("/settings/backup")
     const picker = device.waitForEvent("filechooser")
     await device.getByRole("button", { name: "Pilih file cadangan" }).click()
@@ -187,6 +214,13 @@ test("restores products and custom units in a fresh device profile", async ({
     await device.goto("/products")
     await expect(device.getByRole("main")).toContainText("Beras Premium")
     await expect(device.getByRole("main")).toContainText("10 kg")
+    await device.goto("/pos")
+    await expect(
+      device.getByRole("button", { name: /Beras Premium/ }),
+    ).toBeVisible()
+    await expect(
+      device.getByRole("button", { name: /Lihat Keranjang/ }),
+    ).toHaveCount(0)
     await device.goto("/settings/units")
     await expect(device.getByRole("main")).toContainText("Gram")
     await device.reload()

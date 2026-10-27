@@ -39,7 +39,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fflate": "^0.8.3",
-    "jeep-sqlite": "^2.8.0",
+    "jeep-sqlite": "2.8.0",
     "jsbarcode": "^3.12.3",
     "jsqr": "^1.4.0",
     "ky": "^1.0.0",
@@ -79,5 +79,8 @@
     "typescript-eslint": "^8.0.0",
     "vitest": "^3.2.0",
     "vue-tsc": "^3.3.8"
+  },
+  "patchedDependencies": {
+    "jeep-sqlite@2.8.0": "patches/jeep-sqlite@2.8.0.patch"
   }
 }

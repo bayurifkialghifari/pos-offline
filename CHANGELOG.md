@@ -4,7 +4,10 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
-No unreleased changes.
+### Fixed
+
+- Recover browser cart edits after reload interrupts an IndexedDB save, and clear the local draft after a successful backup restore.
+- Preserve the previous browser database until its replacement commits atomically, so an interrupted save cannot erase products or transactions.
 
 ## [0.1.0] - 2026-10-27
 

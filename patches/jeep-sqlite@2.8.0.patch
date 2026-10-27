@@ -1,0 +1,24 @@
+diff --git a/dist/collection/utils/utils-store.js b/dist/collection/utils/utils-store.js
+index f7665faff91500f2b5fbd788bec7cdd233204b49..71958647322ccee09cddd4b755feb5fc0bfe369c 100644
+--- a/dist/collection/utils/utils-store.js
++++ b/dist/collection/utils/utils-store.js
+@@ -34,7 +34,6 @@ export class UtilsStore {
+     }
+     static async saveDBToStore(dbName, data, store) {
+         try {
+-            await store.removeItem(dbName);
+             // store the database
+             await store.setItem(dbName, data);
+             return Promise.resolve();
+diff --git a/dist/esm/jeep-sqlite.entry.js b/dist/esm/jeep-sqlite.entry.js
+index 43294c7727d2339709310302f4cce8e42fb52243..4f3775480e71910eedbc577f2d3fdda4c371c653 100644
+--- a/dist/esm/jeep-sqlite.entry.js
++++ b/dist/esm/jeep-sqlite.entry.js
+@@ -2701,7 +2701,6 @@ class UtilsStore {
+     }
+     static async saveDBToStore(dbName, data, store) {
+         try {
+-            await store.removeItem(dbName);
+             // store the database
+             await store.setItem(dbName, data);
+             return Promise.resolve();

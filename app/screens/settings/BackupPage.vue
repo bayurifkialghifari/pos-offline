@@ -79,7 +79,11 @@ function recovery() {
 function replace() {
   return task(async () => {
     if (!preview.value) return
+    const cart = useCartStore()
+    await cart.flushDraft()
     await new BackupService(getDb()).replace(preview.value)
+    cart.clear()
+    await cart.flushDraft()
     confirm.value = false
     window.location.assign("/")
   })

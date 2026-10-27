@@ -19,7 +19,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "fflate": "^0.8.3",
-        "jeep-sqlite": "^2.8.0",
+        "jeep-sqlite": "2.8.0",
         "jsbarcode": "^3.12.3",
         "jsqr": "^1.4.0",
         "ky": "^1.0.0",
@@ -61,6 +61,9 @@
         "vue-tsc": "^3.3.8",
       },
     },
+  },
+  "patchedDependencies": {
+    "jeep-sqlite@2.8.0": "patches/jeep-sqlite@2.8.0.patch",
   },
   "packages": {
     "@babel/code-frame": ["@babel/code-frame@7.29.7", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.29.7", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw=="],
