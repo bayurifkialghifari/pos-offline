@@ -35,7 +35,7 @@ Re-inspect original archive bytes before replacement to prevent mutation of vali
 
 Camera scanning uses getUserMedia, detector fallback and explicit teardown. Photos are local bytes with media:// references. ThermalPrinterPlugin transports ESC/POS over paired Bluetooth Classic SPP or USB bulk endpoints. DocumentsPlugin avoids broad storage permissions.
 
-Only the About screen requests public GitHub releases. Repository-scoped asset URLs, allowed HTTPS redirects, timeouts and bounded sizes protect downloads. ReleaseDownload verifies transfer SHA-256. ApkVerifier verifies package, exact release version/code, increasing version and installed signer. A verified cached APK is exposed via FileProvider to the Android installer after unknown-source permission. Installation stays interactive.
+Only the manual version-card action in Settings and About requests public GitHub releases. The card's composable coordinates explicit update states and calls existing services; the changelog molecule renders text safely. Repository-scoped asset URLs, allowed HTTPS redirects, timeouts and bounded sizes protect downloads. ReleaseDownload verifies transfer SHA-256. ApkVerifier verifies package, exact release version/code, increasing version and installed signer. A verified cached APK is exposed via FileProvider to the Android installer after unknown-source permission. Installation stays interactive.
 
 ## Build/release
 

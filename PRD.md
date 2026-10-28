@@ -38,7 +38,7 @@ Include all business tables with soft-deleted history, actual media, Open Bills,
 
 ## Design
 
-Combine the existing POS Kacaw layout with charcoal/lime styling, blue money and green/red cashflow. Dashboard/reports use real data, empty and error states. Phone/tablet/desktop and both themes must be usable. Dialogs trap focus, expose titles and support Escape. Local icons, visible focus and reduced motion are required.
+Combine the existing POS Kacaw layout with Laundry Stitch charcoal, mint, sky blue and white surfaces. Preserve tablet navigation and dashboard grids. Phone Home starts with a store hero, daily bento and analytics, followed by management and backup. Settings retains its controls and shows an inline version/update card with a changelog modal. Dashboard/reports use real data, empty and error states. Phone/tablet/desktop and both themes must be usable. Dialogs trap focus, expose titles and support Escape and Android Back. Local icons, visible focus and reduced motion are required.
 
 ## Exclusions
 

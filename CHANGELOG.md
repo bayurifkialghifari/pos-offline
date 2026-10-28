@@ -4,6 +4,17 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+### Changed
+
+- Apply Laundry Stitch colors, rounded cards and pill controls while preserving the tablet sidebar and dashboard grids.
+- Recompose phone Home with a charcoal store hero, mint transaction action, blue sales bento and management below analytics; keep backup last.
+- Restyle phone Settings with a store identity hero and icon section headings while preserving profile, QRIS, PIN, theme and splash controls.
+- Show installed version and manual update status inline in Settings; open the formatted bundled changelog in a focused modal shared with About.
+
+### Fixed
+
+- Clear stale update offers after a failed manual recheck and dismiss active dialogs before Android Back navigates away.
+
 ## [0.1.1] - 2026-10-27
 
 ### Changed

@@ -72,6 +72,20 @@ The revision retains version 0.1.0 and records its changes under Unreleased. No 
 
 These are implementation self-review and browser/build results. No independent-review pass or physical Android acceptance is claimed.
 
+## Laundry-inspired Home and Settings revision — October 28, 2026
+
+This revision retains version 0.1.1 and records changes under Unreleased. No release tag or new Android release is created.
+
+- Quality: Prettier, ESLint, Nuxt type checking, documentation validation, 40 Vitest tests and 4 Node script tests passed. Static generation passed.
+- Browser E2E: all 34 checks passed on phone and desktop. Coverage includes responsive Home order, persisted profile data at 320 pixels, inline version presentation, changelog focus trapping/restoration, Close and Escape, the actual hardware-Back dialog dismissal helper, manual update requests, current/newer/offline responses, clearing stale offers after a failed recheck and safe release-text rendering. Startup and opening changelog make no external update request.
+- Manual UI evidence: 222 current-build captures cover 17 routes, changelog states and long-name Home/Settings layouts. Route captures use actual 390, 1440 and 1920 pixel viewports in both themes, at top/end scroll positions; additional long-name captures cover 320, 768 and 1024 pixels. PNG dimensions match recorded browser dimensions, with no measured horizontal overflow. Earlier task captures with incorrect viewport labels are excluded.
+- Populated UI evidence: 71 additional captures cover nominal quantity, cart/payment, Home, Reports, Transactions, Cashflow and PIN setup. Reporting captures use 320, 390, 768 and 1440 pixels in both themes at top/end scroll positions. A Rp10,000 nominal purchase of rice priced at Rp15,000/kg records 0.667 kg. A second Rp987,654,321 sale yields sales/income of Rp987,664,321, two completed transactions and a rounded average of Rp493,832,161. After a Rp5,000 expense, net cash movement is Rp987,659,321. The rendered UI shows these values and remains within the measured viewport.
+- Tablet layout: the 768-pixel breakpoint retains sidebar navigation, management-first Home order, combined sales/count/average tile and existing analytics grids. Phone Home uses the charcoal hero, daily bento, analytics, management and final backup order. Settings retains profile, logo, QRIS, PIN, theme and splash handlers, followed by backup, inline version/update controls and device prefix.
+- Android: static generation and Capacitor sync passed. The native debug build could not complete because the SDK's Linux AAPT2 binary targets x86-64 while this development host is ARM. The historical temporary compatibility wrapper is unavailable; the attempted Windows AAPT2 bridge did not provide a successful build. No native compilation, APK installation or physical-device acceptance is claimed for this revision.
+- Review: implementation self-review and real-browser QA were completed. Independent reviewers failed to start with HTTP 404 because their configured model requires the canonical OpenAI provider. No independent-review approval or exhaustive platform/accessibility conformance is claimed.
+
+Task profiles use synthetic data and are separate from the user's browser. Screenshots, action logs and build output remain outside the repository.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.

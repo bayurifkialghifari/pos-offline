@@ -4,7 +4,7 @@
 
 The Point of sale app reference by Dipa Inhouse (Dribbble shot 26555653) supplies rounded card rhythm, charcoal controls, pale surfaces and lime highlights. The user requested a mix with POS Kacaw, rather than a pixel clone. Preserve the cashier flow, navigation and dynamic QRIS; redesign dashboard, transactions, reports and cashflow. No third-party brand artwork is copied.
 
-The dashboard revision uses Pinterest pin 1098456165361512077 (Educational Dashboard Design) as composition inspiration: compact shortcuts above analytics, unequal white card blocks, pastel icon wells, charcoal emphasis and lime highlights. Its purple presentation background and educational content are not part of the app.
+The current Home and Settings revision follows the local Laundry Stitch theme and the three supplied phone screenshots. Use charcoal heroes, mint actions, a blue sales tile, white rounded cards and quiet gray surfaces. The earlier Pinterest bento reference remains a composition cue. Preserve tablet navigation, card grids and content width; change the phone composition explicitly at the 768 px breakpoint.
 
 ## Personas and constraints
 
@@ -12,9 +12,9 @@ Owners review sales and cash movement. Cashiers scan, weigh and accept exact req
 
 ## Tokens
 
-Light: canvas #f4f5f0, card #ffffff, ink #20251f, muted ink #62685f, muted surface #edf0e8, hairline #dce0d6. Dark: canvas #151a16, card #202721, ink #f3f5ee, muted ink #aab2a5, muted surface #2c352d, hairline #3b453b. Primary lime #d4ed72 with charcoal ink; monetary blue #2863bc; incoming green #25704b; outgoing red #be4141. Dark semantic inks use lighter variants. No colored card edge stripes.
+Light: canvas #f8f9fb, card #ffffff, ink/primary/hero #161c28, secondary ink #414b5c, muted ink #626d7b, muted surface #edf5fa, hairline #e2e7ed. Primary controls use white text. Mint #00e29d with charcoal ink highlights the phone transaction action. Featured sales uses sky #a1e0fd with charcoal ink. Monetary blue #1e667f; incoming green #007d58; outgoing red #be4141; amber #a65b08. Dark: canvas #10151e, card #1a2230, ink #edf2f8, muted ink #aab5c5, muted surface #253142, hairline #364458; primary #edf2f8 with charcoal ink; featured #244758 with light ink. Hero remains charcoal with light text. Semantic inks use lighter variants in dark mode. No colored card edge stripes.
 
-System sans: body 14–16 px, metadata 12 px, screen heading 22–28 px, metrics 26–36 px. Use tabular numerals for amounts. Spacing: 4, 8, 12, 16, 20, 24, 32, 48 px. Card radius 20 px, controls 12 px, sheets 24 px. Neutral hairlines and soft shadows define layers.
+System sans: body 14–16 px, metadata 12 px, screen heading 22–28 px, metrics 26–36 px. Use tabular numerals for amounts. Spacing: 4, 8, 12, 16, 20, 24, 32, 48 px. Card radius 24 px, pill buttons, input radius 14 px, sheets 24 px. Low shadow: 0 2px 4px rgb(22 28 40 / 3%); raised shadow: 0 16px 48px rgb(22 28 40 / 12%). Neutral hairlines define layers.
 
 ## Primitives and atomic design
 
@@ -22,13 +22,13 @@ Atoms: buttons, inputs, badges, labels and toggles. Molecules: money inputs, dat
 
 ## Layout and scrolling
 
-At 768 px and above use a fixed 224 px sidebar and one scrolling main surface. Below 768 px use bottom navigation and a single scrolling main. Cashier uses a product grid and cart sheet. Main content uses min-width:0. Safe areas apply to headers, bottom navigation and sheets. Charts provide textual totals and dates. Existing POS Kacaw is the concrete structural source; the Dribbble reference supplies surface treatment.
+At 768 px and above preserve the fixed 256 px sidebar and one scrolling main surface. Below 768 px use the existing five-route bottom navigation with a dark filled active item and a single scrolling main. The shell is bounded by 100dvh. Cashier uses a product grid and cart sheet. Main content uses min-width:0 and min-height:0. Safe areas apply to headers, bottom navigation and sheets. Charts provide textual totals and dates.
 
-Home begins with store management, with Products and Product units adjacent and a compact backup shortcut. Analytics follow in a responsive bento: a larger lime sales tile, cashflow tiles, a wide trend panel and a narrow cashier/activity column. Use explicit grid placement in DOM order; do not use dense packing. The structural reference is StyleGallery's twelve-span-grid pattern, adapted to a twelve-column desktop grid and ordinary stacked phone flow. Main remains the only scrolling surface. The final section is a backup card with its own heading, icon, title, description and an icon-bearing button below.
+Phone Home order: charcoal store hero with mint transaction action, daily bento, trend/cashier/activity analytics, store management, then backup. The sky sales tile spans two rows beside transaction count and average; incoming/outgoing cash follow and net cash spans the full width. Below 360 px stack summary tiles for amount readability. At 768 px and above retain the existing header, management-first order, sales/count/average tile, cash columns and twelve-column analytics grid. Render content once in DOM/tab order at each breakpoint, without dense packing or CSS order changes. Products and Product units remain adjacent. The final section is a backup card with a heading, icon, title, description and button below.
 
-Dashboard cards use 20–24 px radii, 16–24 px gaps/padding, 40–48 px icon wells and 26–36 px tabular amounts. Icon wells use existing semantic inks at low opacity; primary tiles use lime with charcoal text. Zero-data screens show actual zero totals and useful links, never fictional growth. Settings ends with the same backup card and an About button. About opens a focus-trapped BottomSheet on phones and a centered, scrollable dialog on desktop; the existing About route uses the same content.
+Dashboard cards use 24 px radii, 12–24 px gaps/padding, 40–48 px icon wells and 26–36 px tabular amounts. Icon wells use semantic inks at low opacity. Zero-data screens show actual zero totals and useful links, never fictional growth. Phone Settings adds a charcoal store identity hero and Laundry-style icon section headings; preserve all profile, logo, QRIS, PIN, light/dark and splash controls. Settings ends with backup followed by an inline version/update card and device prefix. The card shows installed version, a changelog button, explicit unchecked/checking/current/available/error states and a manual update action. Opening either Settings or About never checks GitHub. Changelog opens in a focus-trapped sheet on phones and centered dialog on desktop; render bundled English headings and lists safely as text. The standalone About route uses the same version card. Escape, Close and Android Back dismiss the active dialog before route navigation.
 
-Phone store shortcuts use compact horizontal cards with 36 px icon wells; cash tiles remain paired below the full-width sales tile. Native scrollbars and controls follow the selected light/dark color scheme.
+Phone store shortcuts use compact horizontal cards with 36 px icon wells. Native scrollbars and controls follow the selected light/dark color scheme.
 
 ## Interaction and states
 
