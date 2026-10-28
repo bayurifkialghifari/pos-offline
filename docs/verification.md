@@ -111,6 +111,21 @@ Fresh manual browser captures cover Home at 390, 768, 1440 and 1920 CSS pixels i
 
 Both independent reviewers failed to start with the same provider HTTP 404 described below. No independent-review approval, exhaustive accessibility audit or physical Android acceptance is claimed. The optional skill audit script requires TypeScript 7 unstable APIs unavailable in the project's installed TypeScript 5.9; the repository's normal lint and type checks passed.
 
+## Published v0.1.3 release — October 28, 2026
+
+The [prepared main-branch CI run](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40636502254) passed quality and Android jobs on commit fee646d. Prettier, ESLint, Nuxt types, documentation validation, 40 Vitest tests, 4 Node script tests and all 34 browser checks passed. Static generation, Capacitor sync and the Android debug APK build passed on GitHub's Ubuntu runner.
+
+The [tag workflow](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40636895862) passed its checks, built and signed APK/AAB artifacts, verified the APK signature and published [v0.1.3](https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.3) at 05:17:35 UTC on October 28, 2026. The remote annotated tag resolves to fee646daeae18940cb8ce5f9a5ccc68e82850701. GitHub's latest-release endpoint returned v0.1.3 as a stable published release with all three expected assets. This release places store management above the daily summary on every screen width and keeps backup last.
+
+Downloaded artifacts match SHA256SUMS.txt, GitHub's asset digests and recorded byte sizes:
+
+| Asset                  |      Bytes | SHA-256                                                          |
+| ---------------------- | ---------: | ---------------------------------------------------------------- |
+| pos-offline-v0.1.3.apk | 16,124,119 | 2ae15d0c185c56bc6e372bd420764f332d3e10445235705eee04cc52cda5b684 |
+| pos-offline-v0.1.3.aab | 11,524,474 | 2074758f093cc99aa1465134351c2be8e37e5bd0cdf61aa50adc8b4ccb845cb5 |
+
+The actual app release schema, asset selection and checksum parser accepted the published latest-release response and checksum file. Release notes match the dated changelog section exactly. APK manifest inspection confirmed com.karuhundeveloper.posoffline, version 0.1.3 and version code 1003, increasing from 1002 in the downloaded v0.1.2 APK. APK Signature Scheme v2 verification and AAB JAR signature verification passed. Both artifacts use the same RSA-4096 certificate as the published v0.1.2 APK, with SHA-256 609b43d755d3f3905c5a389ea61c579deaa5f3391b76a1fdf4f75950cd805a07. Physical installation and Android update acceptance remain untested.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.
