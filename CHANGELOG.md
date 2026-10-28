@@ -4,6 +4,8 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-28
+
 ### Fixed
 
 - Place store-management shortcuts above the daily summary on phones, tablets and desktops; keep backup last.
