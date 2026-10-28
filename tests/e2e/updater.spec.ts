@@ -26,22 +26,29 @@ const newerRelease = {
   ],
 } as const
 
-test("checks manually inside the settings About dialog", async ({ page }) => {
+test("checks manually from the inline Settings version card", async ({
+  page,
+}) => {
   let requests = 0
   await page.route(endpoint, async (route) => {
     requests++
     await route.fulfill({ json: newerRelease })
   })
   await page.goto("/settings")
-  await page.getByRole("button", { name: /Tentang aplikasi/ }).click()
-  const dialog = page.getByRole("dialog", { name: "Tentang aplikasi" })
+  const card = page.getByRole("region", { name: "Aplikasi", exact: true })
   await expect(
-    dialog.getByRole("button", { name: "Periksa pembaruan" }),
+    card.getByRole("button", { name: "Cek pembaruan" }),
   ).toBeEnabled()
   expect(requests).toBe(0)
-  await dialog.getByRole("button", { name: "Periksa pembaruan" }).click()
-  await expect(dialog).toContainText("Tersedia " + newerTag)
-  await expect(dialog).toContainText(newerRelease.body)
+  await card.getByRole("button", { name: "Lihat changelog" }).click()
+  await expect(
+    page.getByRole("dialog", { name: "Changelog aplikasi" }),
+  ).toBeVisible()
+  await page.keyboard.press("Escape")
+  expect(requests).toBe(0)
+  await card.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(card).toContainText("Tersedia " + newerTag)
+  await expect(card).toContainText(newerRelease.body)
   expect(requests).toBe(1)
   await expect(page).toHaveURL(/settings$/)
 })
@@ -70,15 +77,13 @@ test("checks only on request and does not offer the installed version", async ({
   })
   await page.goto("/settings/about")
   await expect(
-    page.getByRole("button", { name: "Periksa pembaruan" }),
+    page.getByRole("button", { name: "Cek pembaruan" }),
   ).toBeEnabled()
   expect(requests).toBe(0)
 
-  await page.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
 
-  await expect(page.getByRole("status")).toContainText(
-    "Belum ada versi lebih baru",
-  )
+  await expect(page.getByRole("status")).toContainText("Versi sudah terbaru")
   expect(requests).toBe(1)
   await expect(page.getByRole("main")).not.toContainText("Tersedia " + tag)
 })
@@ -89,7 +94,7 @@ test("shows newer release notes after a manual update check", async ({
   await page.route(endpoint, (route) => route.fulfill({ json: newerRelease }))
   await page.goto("/settings/about")
 
-  await page.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
 
   await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
   await expect(page.getByRole("main")).toContainText(newerRelease.body)
@@ -103,15 +108,15 @@ test("allows another manual check after an offline failure", async ({
 }) => {
   await page.route(endpoint, (route) => route.abort("internetdisconnected"))
   await page.goto("/settings/about")
-  await page.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
   await expect(page.getByRole("alert")).toBeVisible()
   await expect(
-    page.getByRole("button", { name: "Periksa pembaruan" }),
+    page.getByRole("button", { name: "Cek pembaruan" }),
   ).toBeEnabled()
   await page.unroute(endpoint)
   await page.route(endpoint, (route) => route.fulfill({ json: newerRelease }))
 
-  await page.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
 
   await expect(page.getByRole("alert")).toHaveCount(0)
   await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
@@ -136,8 +141,43 @@ test("rejects a release whose assets are outside the configured repository", asy
   )
   await page.goto("/settings/about")
 
-  await page.getByRole("button", { name: "Periksa pembaruan" }).click()
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
 
   await expect(page.getByRole("alert")).toBeVisible()
   await expect(page.getByRole("main")).not.toContainText("Tersedia " + newerTag)
+})
+
+test("clears an earlier update offer after a failed recheck", async ({
+  page,
+}) => {
+  await page.route(endpoint, (route) => route.fulfill({ json: newerRelease }))
+  await page.goto("/settings")
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
+  await page.unroute(endpoint)
+  await page.route(endpoint, (route) => route.fulfill({ status: 403 }))
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(page.getByRole("alert")).toContainText(
+    "Batas pemeriksaan GitHub",
+  )
+  await expect(page.getByRole("main")).not.toContainText("Tersedia " + newerTag)
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeEnabled()
+})
+
+test("renders release HTML as text without executing it", async ({ page }) => {
+  const body =
+    '<img src="invalid" onerror="document.documentElement.dataset.executed = true">'
+  await page.route(endpoint, (route) =>
+    route.fulfill({ json: { ...newerRelease, body } }),
+  )
+  await page.goto("/settings/about")
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(page.getByRole("main")).toContainText(body)
+  await expect(page.locator('img[src="invalid"]')).toHaveCount(0)
+  await expect(page.locator("html")).not.toHaveAttribute(
+    "data-executed",
+    "true",
+  )
 })

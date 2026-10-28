@@ -4,7 +4,9 @@
 
 Installed Android version/browser package version, bundled English changelog, manual GitHub latest-stable check and release notes. Native updates validate repository URL/redirects, SHA-256, package, installed signer and exact increasing version/code before interactive installer.
 
-The About button at the bottom of Settings opens a modal with the same content as the standalone About route. Opening the modal does not check GitHub; update discovery still requires pressing the check button.
+Settings shows an inline application card after backup, with installed version, changelog and update actions. The standalone About route reuses this card. Status begins as Belum diperiksa. Opening either route or its changelog makes no GitHub request; discovery requires pressing Cek pembaruan. Checking, current, available and error states have explicit feedback. A failed recheck clears any previous offer; checks and installation are disabled while an operation runs.
+
+The bundled English changelog opens in a focus-trapped phone sheet or centered desktop dialog with readable headings and lists. Text rendering never executes release HTML. Escape, Close and Android Back dismiss the dialog before route navigation. Native permission guidance and installer confirmation remain interactive.
 
 ## Implementation
 

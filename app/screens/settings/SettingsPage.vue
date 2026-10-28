@@ -6,11 +6,11 @@ import { Label } from "@/components/atoms/ui/label"
 import { Switch } from "@/components/atoms/ui/switch"
 import BottomSheet from "@/components/molecules/common/BottomSheet.vue"
 import PinPad from "@/components/molecules/common/PinPad.vue"
+import SettingsSection from "@/components/molecules/common/SettingsSection.vue"
 import AppHeader from "@/components/organisms/layout/AppHeader.vue"
 import SettingsActions from "@/components/organisms/settings/SettingsActions.vue"
 import { downscale, pickImage } from "@/lib/image"
 import { decodeQrFromDataUrl, encodeQrToDataUrl, isValidQris } from "@/lib/qris"
-import { APP_VERSION } from "@/lib/version"
 import { useAuthStore } from "@/stores/auth"
 import { useMediaStore } from "@/stores/media"
 import { useSettingsStore, type SplashBg } from "@/stores/settings"
@@ -203,13 +203,41 @@ function lockNow() {
 <template>
   <div>
     <AppHeader title="Setelan" />
-    <div class="space-y-5 p-4">
-      <section class="space-y-3">
+    <div class="space-y-6 p-4 pb-8 md:space-y-5">
+      <section
+        aria-label="Identitas toko"
+        class="rounded-3xl bg-hero p-5 text-hero-foreground md:hidden"
+      >
         <p
-          class="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+          class="text-xs font-semibold tracking-widest text-hero-foreground/75"
         >
-          Profil Toko
+          TOKO
         </p>
+        <span
+          class="mt-4 flex size-12 items-center justify-center overflow-hidden rounded-2xl bg-hero-foreground/10"
+          ><img
+            v-if="media.url(storeLogo)"
+            :src="media.url(storeLogo) ?? undefined"
+            alt=""
+            width="48"
+            height="48"
+            class="size-full object-contain p-1" /><Store
+            v-else
+            aria-hidden="true"
+            class="size-6"
+        /></span>
+        <h2 class="mt-5 break-words text-2xl font-semibold tracking-tight">
+          {{ storeName }}
+        </h2>
+        <p class="mt-2 break-words text-sm text-hero-foreground/75">
+          {{ storeOwner || "Profil toko" }}
+        </p>
+      </section>
+      <SettingsSection
+        id="store-profile-heading"
+        title="Profil toko"
+        :icon="Store"
+      >
         <Card>
           <CardContent class="space-y-4 p-4">
             <div class="flex items-center gap-4">
@@ -220,6 +248,8 @@ function lockNow() {
                   v-if="media.url(storeLogo)"
                   :src="media.url(storeLogo)!"
                   alt="Logo toko"
+                  width="64"
+                  height="64"
                   class="size-full object-contain p-1"
                 />
                 <Store v-else class="size-6" />
@@ -234,7 +264,7 @@ function lockNow() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    class="gap-1.5"
+                    class="min-h-11 gap-1.5 md:min-h-0"
                     :disabled="logoBusy"
                     @click="chooseLogo"
                   >
@@ -246,7 +276,7 @@ function lockNow() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    class="text-destructive"
+                    class="min-h-11 text-destructive md:min-h-0"
                     @click="removeLogo"
                   >
                     Hapus
@@ -256,18 +286,24 @@ function lockNow() {
             </div>
             <div class="space-y-1.5">
               <Label for="store-name">Nama Toko</Label>
-              <Input id="store-name" v-model="name" placeholder="POS Offline" />
+              <Input
+                id="store-name"
+                v-model="name"
+                placeholder="POS Offline"
+                class="h-11 md:h-10"
+              />
             </div>
             <div class="space-y-1.5">
               <Label for="store-owner">Pemilik</Label>
               <Input
                 id="store-owner"
+                class="h-11 md:h-10"
                 v-model="owner"
                 placeholder="Nama pemilik"
               />
             </div>
             <Button
-              class="w-full gap-2"
+              class="min-h-11 w-full gap-2 md:min-h-0"
               :disabled="savingProfile"
               @click="saveProfile"
             >
@@ -276,14 +312,13 @@ function lockNow() {
             </Button>
           </CardContent>
         </Card>
-      </section>
+      </SettingsSection>
 
-      <section class="space-y-3">
-        <p
-          class="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-        >
-          Pembayaran QRIS
-        </p>
+      <SettingsSection
+        id="qris-settings-heading"
+        title="Pembayaran QRIS"
+        :icon="QrCode"
+      >
         <Card>
           <CardContent class="space-y-4 p-4">
             <div class="flex items-center gap-4">
@@ -294,6 +329,8 @@ function lockNow() {
                   v-if="qrisPreview"
                   :src="qrisPreview"
                   alt="QRIS"
+                  width="64"
+                  height="64"
                   class="size-full object-contain p-0.5"
                 />
                 <QrCode v-else class="size-6" />
@@ -309,7 +346,7 @@ function lockNow() {
                     type="button"
                     variant="outline"
                     size="sm"
-                    class="gap-1.5"
+                    class="min-h-11 gap-1.5 md:min-h-0"
                     :disabled="qrisBusy"
                     @click="chooseQris"
                   >
@@ -322,7 +359,7 @@ function lockNow() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    class="text-destructive"
+                    class="min-h-11 text-destructive md:min-h-0"
                     @click="removeQris"
                   >
                     Hapus
@@ -360,19 +397,18 @@ function lockNow() {
             </p>
           </CardContent>
         </Card>
-      </section>
+      </SettingsSection>
 
-      <section class="space-y-3">
-        <p
-          class="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-        >
-          Keamanan
-        </p>
+      <SettingsSection
+        id="security-settings-heading"
+        title="Keamanan & tampilan"
+        :icon="Lock"
+      >
         <Card>
           <CardContent class="divide-y divide-border p-0">
             <div class="flex items-center gap-3 p-4">
               <div
-                class="flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground"
+                class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-info"
               >
                 <Lock class="size-5" />
               </div>
@@ -395,7 +431,7 @@ function lockNow() {
               @click="openPinSheet('change')"
             >
               <div
-                class="flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground"
+                class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-info"
               >
                 <KeyRound class="size-5" />
               </div>
@@ -411,7 +447,7 @@ function lockNow() {
               @click="lockNow"
             >
               <div
-                class="flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground"
+                class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-info"
               >
                 <LockKeyhole class="size-5" />
               </div>
@@ -424,7 +460,7 @@ function lockNow() {
             </button>
             <div class="flex items-center gap-3 p-4">
               <div
-                class="flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground"
+                class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-info"
               >
                 <Moon class="size-5" />
               </div>
@@ -440,14 +476,13 @@ function lockNow() {
             </div>
           </CardContent>
         </Card>
-      </section>
+      </SettingsSection>
 
-      <section class="space-y-3">
-        <p
-          class="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-        >
-          Splash Screen
-        </p>
+      <SettingsSection
+        id="splash-settings-heading"
+        title="Layar pembuka"
+        :icon="Sparkles"
+      >
         <Card>
           <CardContent class="space-y-4 p-4">
             <div class="flex items-center gap-3">
@@ -499,7 +534,7 @@ function lockNow() {
             </div>
           </CardContent>
         </Card>
-      </section>
+      </SettingsSection>
 
       <SettingsActions />
 
@@ -507,7 +542,7 @@ function lockNow() {
         class="flex items-center justify-center gap-2 pb-2 text-xs text-muted-foreground"
       >
         <Smartphone class="size-3.5" />
-        Perangkat: {{ devicePrefix }} · POS Offline v{{ APP_VERSION }}
+        Perangkat: {{ devicePrefix }}
       </div>
     </div>
 

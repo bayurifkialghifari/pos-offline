@@ -8,6 +8,23 @@ export function goBackOrHome(router: Router): void {
   else void router.replace("/")
 }
 
+export function dismissActiveDialog(): boolean {
+  const dialogs = document.querySelectorAll(
+    '[role="dialog"][data-state="open"]',
+  )
+  const dialog = dialogs.item(dialogs.length - 1)
+  if (!dialog) return false
+  dialog.dispatchEvent(
+    new KeyboardEvent("keydown", {
+      key: "Escape",
+      code: "Escape",
+      bubbles: true,
+      cancelable: true,
+    }),
+  )
+  return true
+}
+
 export function useHardwareBack() {
   const router = useRouter()
   const showExitHint = ref(false)
@@ -20,6 +37,7 @@ export function useHardwareBack() {
     const route = router.currentRoute.value
 
     if (route.name === "lock") return
+    if (dismissActiveDialog()) return
 
     if (route.path === "/") {
       const now = Date.now()
