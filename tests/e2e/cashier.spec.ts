@@ -121,8 +121,19 @@ test("charges exact nominal, restores a draft, holds and completes an Open Bill"
   await page.goto("/")
   const summary = page.getByRole("article", { name: "Penjualan hari ini" })
   await expect(summary).toContainText(/Rp\s*10\.000/)
-  await expect(summary).toContainText("1 transaksi selesai")
-  await expect(summary).toContainText(/Rata-rata\s*Rp\s*10\.000/)
+  if ((page.viewportSize()?.width ?? 0) >= 768) {
+    await expect(summary).toContainText("1 transaksi selesai")
+    await expect(summary).toContainText(/Rata-rata\s*Rp\s*10\.000/)
+  } else {
+    await expect(
+      page
+        .getByRole("article")
+        .filter({ has: page.getByText("Transaksi", { exact: true }) }),
+    ).toContainText("1")
+    await expect(
+      page.getByRole("article").filter({ hasText: "Rata-rata" }),
+    ).toContainText(/Rp\s*10\.000/)
+  }
   const activity = page.getByRole("region", { name: "Aktivitas terbaru" })
   await expect(activity.getByRole("link").first()).toContainText("10.000")
   await expect(activity.getByRole("link").first()).toContainText("Selesai")

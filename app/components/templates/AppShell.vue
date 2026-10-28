@@ -25,10 +25,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex h-full w-full overflow-hidden bg-background sm:h-screen">
+  <div class="flex h-dvh w-full overflow-hidden bg-background">
     <SideNav v-if="showSideNav" />
     <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
-      <main class="no-scrollbar flex-1 overflow-y-auto">
+      <main class="no-scrollbar min-h-0 flex-1 overflow-y-auto">
         <p
           v-if="cart.draftError"
           role="alert"
@@ -73,14 +73,14 @@ onMounted(() => {
 
 <style>
 .splash-leave-active {
-  transition: opacity 0.4s ease;
+  transition: opacity 0.2s ease;
 }
 .splash-leave-to {
   opacity: 0;
 }
 .hint-enter-active,
 .hint-leave-active {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.2s ease;
 }
 .hint-enter-from,
 .hint-leave-to {

@@ -6,7 +6,7 @@ const props = defineProps<{ class?: string }>()
   <div
     :class="
       cn(
-        'rounded-xl border bg-card text-card-foreground shadow-sm',
+        'rounded-3xl border bg-card text-card-foreground shadow-[var(--shadow-card)]',
         props.class,
       )
     "

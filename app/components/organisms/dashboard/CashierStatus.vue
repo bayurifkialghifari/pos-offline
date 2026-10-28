@@ -12,7 +12,7 @@ const cashier = useCashierStore()
   >
     <div class="flex items-center justify-between gap-3">
       <span
-        class="flex size-11 items-center justify-center rounded-2xl bg-primary/15 text-primary"
+        class="flex size-11 items-center justify-center rounded-2xl bg-highlight/15 text-highlight"
         ><CalendarClock aria-hidden="true" class="size-5" /></span
       ><span class="rounded-full bg-hero-foreground/10 px-3 py-1 text-xs">{{
         cashier.current ? "Sedang buka" : "Belum dibuka"

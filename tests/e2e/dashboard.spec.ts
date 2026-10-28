@@ -2,9 +2,7 @@ import { expect, test } from "@playwright/test"
 
 for (const theme of ["light", "dark"] as const) {
   test(
-    "keeps store tools above analytics and backup last in the " +
-      theme +
-      " theme",
+    "keeps responsive Home order and backup last in the " + theme + " theme",
     async ({ page }) => {
       await page.goto("/settings")
       const toggle = page.getByRole("switch", { name: "Mode Gelap" })
@@ -27,7 +25,11 @@ for (const theme of ["light", "dark"] as const) {
         "Satuan produk",
       ])
       const sections = main.locator("section")
-      await expect(sections.first()).toContainText("Kelola toko")
+      await expect(sections.first()).toContainText(
+        (page.viewportSize()?.width ?? 0) < 768
+          ? "Ringkasan hari ini"
+          : "Kelola toko",
+      )
       await expect(sections.last()).toContainText("Cadangkan data")
       const backup = sections
         .last()

@@ -23,7 +23,7 @@ const items = [
     to: "/settings/units",
     label: "Satuan produk",
     icon: Ruler,
-    tone: "bg-primary/25 text-foreground",
+    tone: "bg-accent text-info",
   },
   {
     to: "/transactions",
@@ -59,7 +59,7 @@ const items = [
     to: "/settings/backup",
     label: "Cadangan data",
     icon: DatabaseBackup,
-    tone: "bg-primary/25 text-foreground",
+    tone: "bg-accent text-info",
   },
 ] as const
 </script>

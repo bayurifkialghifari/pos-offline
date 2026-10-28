@@ -12,7 +12,7 @@ import { RouterLink } from "vue-router"
     <div class="rounded-3xl border border-border bg-card p-5 md:p-6">
       <div class="flex items-start gap-4">
         <div
-          class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/25 text-foreground"
+          class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-info"
         >
           <DatabaseBackup aria-hidden="true" class="size-6" />
         </div>
@@ -28,7 +28,7 @@ import { RouterLink } from "vue-router"
       </div>
       <RouterLink
         to="/settings/backup"
-        class="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85 sm:w-fit"
+        class="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85 sm:w-fit"
       >
         <HardDriveDownload aria-hidden="true" class="size-4" /> Cadangkan data
         <ArrowUpRight aria-hidden="true" class="size-4" />

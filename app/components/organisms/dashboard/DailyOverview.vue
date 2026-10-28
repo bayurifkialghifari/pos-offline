@@ -11,6 +11,7 @@ import {
 import { computed } from "vue"
 import { RouterLink } from "vue-router"
 const reports = useReportsStore()
+defineProps<{ mobile?: boolean }>()
 const average = computed(() =>
   reports.todaySalesSummary.count
     ? Math.round(
@@ -20,31 +21,53 @@ const average = computed(() =>
 )
 </script>
 <template>
-  <div class="grid grid-cols-2 gap-4 xl:grid-cols-12">
+  <div
+    class="grid"
+    :class="
+      mobile
+        ? 'grid-cols-1 gap-3 min-[360px]:grid-cols-2'
+        : 'grid-cols-2 gap-4 xl:grid-cols-12'
+    "
+  >
     <article
       aria-label="Penjualan hari ini"
-      class="col-span-2 min-w-0 rounded-3xl bg-primary p-5 text-primary-foreground md:p-6 xl:col-span-6"
+      class="min-w-0 rounded-3xl bg-featured text-featured-foreground"
+      :class="
+        mobile
+          ? 'flex flex-col p-4 min-[360px]:row-span-2'
+          : 'col-span-2 p-5 md:p-6 xl:col-span-6'
+      "
     >
       <div class="flex items-center justify-between gap-3">
-        <span class="flex items-center gap-3 text-sm font-semibold"
+        <span class="flex flex-wrap items-center gap-3 text-sm font-semibold"
           ><span
-            class="flex size-11 items-center justify-center rounded-2xl bg-primary-foreground/10"
+            class="flex size-11 items-center justify-center rounded-2xl bg-featured-foreground/10"
             ><CircleDollarSign aria-hidden="true" class="size-6" /></span
           >Penjualan hari ini</span
         >
         <RouterLink
           to="/reports"
           aria-label="Lihat laporan penjualan"
-          class="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-foreground/10 transition-colors hover:bg-primary-foreground/20"
+          class="flex size-11 shrink-0 items-center justify-center rounded-full bg-featured-foreground/10 transition-colors hover:bg-featured-foreground/20"
           ><ArrowUpRight aria-hidden="true" class="size-5"
         /></RouterLink>
       </div>
       <p
-        class="mt-5 break-words text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl"
+        class="mt-5 break-words font-semibold tracking-tight tabular-nums"
+        :class="
+          mobile
+            ? reports.todaySalesSummary.total >= 100000000
+              ? 'text-xl'
+              : 'text-3xl'
+            : 'text-3xl sm:text-4xl'
+        "
       >
         {{ formatRupiah(reports.todaySalesSummary.total).replace(/\s/g, " ") }}
       </p>
-      <div class="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+      <p v-if="mobile" class="mt-auto pt-5 text-sm text-featured-foreground/80">
+        Total transaksi selesai hari ini
+      </p>
+      <div v-else class="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
         <p class="flex items-center gap-2">
           <Receipt aria-hidden="true" class="size-4" /><span
             ><strong class="font-semibold">{{
@@ -62,11 +85,26 @@ const average = computed(() =>
       </div>
     </article>
     <MetricCard
+      v-if="mobile"
+      label="Transaksi"
+      :value="String(reports.todaySalesSummary.count)"
+      tone="count"
+      compact
+    />
+    <MetricCard
+      v-if="mobile"
+      label="Rata-rata"
+      :value="formatRupiah(average)"
+      tone="money"
+      compact
+    />
+    <MetricCard
       class="xl:col-span-3"
       label="Kas masuk"
       :value="formatRupiah(reports.todayCashflow.income)"
       detail="Pemasukan hari ini"
       tone="income"
+      :compact="mobile"
     />
     <MetricCard
       class="xl:col-span-3"
@@ -74,10 +112,12 @@ const average = computed(() =>
       :value="formatRupiah(reports.todayCashflow.expense)"
       detail="Pengeluaran hari ini"
       tone="expense"
+      :compact="mobile"
     />
     <RouterLink
       to="/cashflow"
-      class="col-span-2 flex min-h-12 flex-wrap items-center justify-between gap-3 rounded-2xl bg-muted/70 px-4 py-3 text-sm xl:col-span-12"
+      class="flex min-h-12 flex-wrap items-center justify-between gap-3 rounded-3xl border border-border bg-card px-4 py-4 text-sm"
+      :class="mobile ? 'min-[360px]:col-span-2' : 'col-span-2 xl:col-span-12'"
     >
       <span class="flex flex-wrap items-center gap-2"
         ><Wallet
