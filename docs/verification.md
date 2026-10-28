@@ -137,6 +137,21 @@ This revision retains package version 0.1.3 and records changes under Unreleased
 
 The cache is stored separately from SQLite business data and excluded from portable backup exports. Repository-scoped release validation and native download, checksum, package, signer and increasing-version checks remain required. These results are implementation self-review and browser verification; physical Android restart and installation/update acceptance remain untested.
 
+## Published v0.1.4 release — October 28, 2026
+
+The [prepared main-branch CI run](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40646489189) passed quality and Android jobs on commit 00b955a. Prettier, ESLint, Nuxt types, documentation validation, 57 Vitest tests, 4 Node script tests and all 36 browser checks passed. Static generation, Capacitor sync and the Android debug APK build passed on GitHub's Ubuntu runner. The same quality, static generation and browser checks also passed locally before the release commit.
+
+The [tag workflow](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40646850614) passed its checks, built and signed APK/AAB artifacts, verified the APK signature and published [v0.1.4](https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.4) at 06:58:46 UTC on October 28, 2026. The remote annotated tag resolves to 00b955a66d95cbf3453edb7ff143c4704e4f2c06. GitHub's latest-release endpoint returned v0.1.4 as a stable published release with all three expected assets. This release adds the persistent one-hour manual update cache described above, including cached GitHub quota feedback and disabled repeated checks.
+
+Downloaded artifacts match SHA256SUMS.txt, GitHub's asset digests and recorded byte sizes:
+
+| Asset                  |      Bytes | SHA-256                                                          |
+| ---------------------- | ---------: | ---------------------------------------------------------------- |
+| pos-offline-v0.1.4.apk | 16,126,492 | d9fb5b883a5339a2cd6bc4c2a1732bf5d1b2d0aa798dc0233c5305aebfe223c5 |
+| pos-offline-v0.1.4.aab | 11,527,030 | f46185bb055006c7c5b4fed9aa77c999632a2faa116ae910a912c01d5ebfa382 |
+
+The actual app release schema, asset selection and checksum parser accepted the published latest-release response and checksum file. Release notes match the dated changelog section exactly. APK manifest inspection confirmed com.karuhundeveloper.posoffline, version 0.1.4 and version code 1004, increasing from 1003 in the downloaded v0.1.3 APK. APK Signature Scheme v2 verification and AAB JAR signature verification passed. Both artifacts use the same certificate as the published v0.1.3 APK, with SHA-256 609b43d755d3f3905c5a389ea61c579deaa5f3391b76a1fdf4f75950cd805a07. Physical installation and Android update acceptance remain untested.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.

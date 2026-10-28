@@ -16,7 +16,7 @@ An Indonesian Android point of sale with all business data on the device. Built 
 
 ## Install on Android
 
-Download the signed [v0.1.3 APK](https://github.com/bayurifkialghifari/pos-offline/releases/download/v0.1.3/pos-offline-v0.1.3.apk) and open it on Android to follow the system installation prompts. The [release page](https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.3) also includes an AAB and SHA256SUMS.txt. See [verification](docs/verification.md) for the published artifact checks and remaining device acceptance checks.
+Download the signed [v0.1.4 APK](https://github.com/bayurifkialghifari/pos-offline/releases/download/v0.1.4/pos-offline-v0.1.4.apk) and open it on Android to follow the system installation prompts. The [release page](https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.4) also includes an AAB and SHA256SUMS.txt. See [verification](docs/verification.md) for the published artifact checks and remaining device acceptance checks.
 
 ## Development
 
