@@ -4,6 +4,8 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-28
+
 ### Changed
 
 - Apply Laundry Stitch colors, rounded cards and pill controls while preserving the tablet sidebar and dashboard grids.
