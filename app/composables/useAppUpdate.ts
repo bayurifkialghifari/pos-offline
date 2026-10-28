@@ -1,10 +1,15 @@
 import { APP_VERSION } from "@/lib/version"
-import type { Release } from "@/services/updates/release"
+import {
+  readCachedUpdate,
+  UPDATE_CACHE_DURATION,
+} from "@/services/updates/cache"
+import { versionCode, type Release } from "@/services/updates/release"
 import {
   checkUpdate,
   installedVersion,
   installUpdate,
 } from "@/services/updates/updater"
+import { useNow } from "@vueuse/core"
 import { computed, onMounted, ref } from "vue"
 
 type UpdateState =
@@ -21,6 +26,21 @@ export function useAppUpdate() {
   const installing = ref(false)
   const installError = ref("")
   const message = ref("")
+  const nextCheckAt = ref<number | null>(null)
+  const now = useNow({ interval: 1000 })
+  const coolingDown = computed(
+    () => nextCheckAt.value !== null && now.value.getTime() < nextCheckAt.value,
+  )
+  const nextCheckLabel = computed(() =>
+    nextCheckAt.value === null
+      ? ""
+      : new Intl.DateTimeFormat("id-ID", {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(nextCheckAt.value),
+  )
   const busy = computed(
     () => state.value.kind === "checking" || installing.value,
   )
@@ -31,6 +51,28 @@ export function useAppUpdate() {
   onMounted(async () => {
     try {
       version.value = await installedVersion()
+      const cached = readCachedUpdate()
+      if (cached) {
+        nextCheckAt.value = cached.checkedAt + UPDATE_CACHE_DURATION
+        switch (cached.result.kind) {
+          case "error":
+            state.value = { kind: "error", message: cached.result.message }
+            break
+          case "release": {
+            const latest = cached.result.release
+            state.value =
+              latest &&
+              versionCode(latest.tag_name.slice(1)) > versionCode(version.value)
+                ? { kind: "available", release: latest }
+                : { kind: "current" }
+            break
+          }
+          default: {
+            const unreachable: never = cached.result
+            return unreachable
+          }
+        }
+      }
     } catch (error) {
       versionError.value =
         error instanceof Error ? error.message : "Versi tidak bisa dibaca"
@@ -38,7 +80,7 @@ export function useAppUpdate() {
   })
 
   async function check() {
-    if (busy.value) return
+    if (busy.value || coolingDown.value) return
     state.value = { kind: "checking" }
     installError.value = ""
     message.value = ""
@@ -55,6 +97,11 @@ export function useAppUpdate() {
             ? error.message
             : "Pemeriksaan gagal. Periksa koneksi dan coba lagi.",
       }
+    } finally {
+      const cached = readCachedUpdate()
+      nextCheckAt.value = cached
+        ? cached.checkedAt + UPDATE_CACHE_DURATION
+        : null
     }
   }
 
@@ -82,6 +129,8 @@ export function useAppUpdate() {
     versionError,
     state,
     busy,
+    coolingDown,
+    nextCheckLabel,
     release,
     installing,
     installError,

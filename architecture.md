@@ -37,6 +37,8 @@ Camera scanning uses getUserMedia, detector fallback and explicit teardown. Phot
 
 Only the manual version-card action in Settings and About requests public GitHub releases. The card's composable coordinates explicit update states and calls existing services; the changelog molecule renders text safely. Repository-scoped asset URLs, allowed HTTPS redirects, timeouts and bounded sizes protect downloads. ReleaseDownload verifies transfer SHA-256. ApkVerifier verifies package, exact release version/code, increasing version and installed signer. A verified cached APK is exposed via FileProvider to the Android installer after unknown-source permission. Installation stays interactive.
 
+The update service deduplicates concurrent discovery requests and persists completed-response feedback in a separate device-local one-hour cache. Cache reuse validates JSON, timestamps and repository assets, then compares release metadata with the installed version. Settings/About restore feedback without fetching and disable checks until expiry. Network failures remain retryable; expiry makes no request. Cache storage is separate from business data and portable backups, with an in-memory fallback when localStorage is unavailable.
+
 ## Build/release
 
 Bun locks dependencies. Prettier formats and organizes imports before each commit. Main/PR CI checks format/lint/types/domain tests/docs/static build/browser E2E and builds a debug APK. Stable tag CI validates package/changelog, signs APK/AAB with a persistent private key and publishes checksums. VersionCode = major × 1,000,000 + minor × 1,000 + patch, with minor/patch at most 999.

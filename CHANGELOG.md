@@ -4,6 +4,15 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+### Changed
+
+- Cache manual GitHub update results locally for one hour, including rate-limit and invalid-response feedback, and restore them when reopening the app.
+- Disable repeated checks during the cooldown, display the next check time, and keep changelog and update installation available. Offline connection failures remain immediately retryable.
+
+### Fixed
+
+- Deduplicate simultaneous update checks and avoid automatic retries of HTTP 429 responses. Distinguish exhausted GitHub quotas from other HTTP 403 failures.
+
 ## [0.1.3] - 2026-10-28
 
 ### Fixed

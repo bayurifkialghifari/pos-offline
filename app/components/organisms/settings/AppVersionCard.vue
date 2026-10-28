@@ -6,6 +6,7 @@ import { useAppUpdate } from "@/composables/useAppUpdate"
 import { Capacitor } from "@capacitor/core"
 import {
   CheckCircle2,
+  Clock3,
   Download,
   History,
   Info,
@@ -21,6 +22,8 @@ const {
   versionError,
   state,
   busy,
+  coolingDown,
+  nextCheckLabel,
   release,
   installing,
   installError,
@@ -98,8 +101,8 @@ const statusLabels = {
           </div>
         </div>
         <p class="text-sm leading-relaxed text-muted-foreground">
-          Cek versi baru saat terhubung internet. Pemeriksaan hanya berjalan
-          saat tombol ditekan.
+          Cek versi baru saat terhubung internet. Hasil pemeriksaan disimpan
+          selama 1 jam di perangkat ini.
         </p>
         <p
           v-if="state.kind === 'error'"
@@ -140,7 +143,8 @@ const statusLabels = {
         <Button
           variant="outline"
           class="min-h-11 w-full"
-          :disabled="busy"
+          :disabled="busy || coolingDown"
+          :aria-describedby="coolingDown ? 'update-cooldown' : undefined"
           @click="check"
           ><Loader2
             v-if="state.kind === 'checking'"
@@ -150,6 +154,17 @@ const statusLabels = {
             state.kind === "checking" ? "Memeriksa…" : "Cek pembaruan"
           }}</Button
         >
+        <p
+          v-if="coolingDown"
+          id="update-cooldown"
+          class="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"
+        >
+          <Clock3 aria-hidden="true" class="mt-0.5 size-4 shrink-0" />
+          <span
+            >Cek lagi mulai {{ nextCheckLabel }}. Hasil tersimpan tetap tersedia
+            setelah aplikasi dibuka ulang.</span
+          >
+        </p>
       </div>
     </div>
     <BottomSheet

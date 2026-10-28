@@ -126,6 +126,17 @@ Downloaded artifacts match SHA256SUMS.txt, GitHub's asset digests and recorded b
 
 The actual app release schema, asset selection and checksum parser accepted the published latest-release response and checksum file. Release notes match the dated changelog section exactly. APK manifest inspection confirmed com.karuhundeveloper.posoffline, version 0.1.3 and version code 1003, increasing from 1002 in the downloaded v0.1.2 APK. APK Signature Scheme v2 verification and AAB JAR signature verification passed. Both artifacts use the same RSA-4096 certificate as the published v0.1.2 APK, with SHA-256 609b43d755d3f3905c5a389ea61c579deaa5f3391b76a1fdf4f75950cd805a07. Physical installation and Android update acceptance remain untested.
 
+## One-hour manual update cache — October 28, 2026
+
+This revision retains package version 0.1.3 and records changes under Unreleased. No release tag or new published APK is created.
+
+- Quality: Prettier, ESLint, Nuxt types, documentation validation, 57 Vitest tests, 4 Node script tests and static generation passed. The updater browser test source also passed a separate TypeScript check.
+- Regression evidence: six request-count tests failed against the original updater before the cache was added. Additional storage-write failure tests failed before the in-memory fallback fix and passed afterward. Coverage includes exact one-hour expiry, module reload, concurrent checks, cached current/error results, installed-version changes, malformed or foreign cache entries and denied/full storage. Connection failures without a response remain retryable.
+- Browser E2E: all 36 checks passed on phone and desktop. Update scenarios verify persisted feedback and disabled controls after reload/navigation, no automatic requests at expiry, another request only after clicking, cached quota errors and immediate retry after an offline failure.
+- Manual UI evidence: 52 fresh captures cover Settings and About in both themes at 390 and 1440 CSS pixels, with available/error/current states, card/end scroll positions and the changelog. PNG dimensions match measured viewports; no main-content overflow or theme-color mismatch remains in the final capture set. Capture readiness waits for inherited heading colors to settle to the applied theme; earlier captures taken before that condition are excluded. Exactly three intercepted GitHub requests occurred, one per scenario, with none on startup, reload, navigation or changelog opening. Escape dismisses changelog and restores focus.
+
+The cache is stored separately from SQLite business data and excluded from portable backup exports. Repository-scoped release validation and native download, checksum, package, signer and increasing-version checks remain required. These results are implementation self-review and browser verification; physical Android restart and installation/update acceptance remain untested.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.

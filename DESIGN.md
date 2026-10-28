@@ -34,6 +34,8 @@ Phone store shortcuts use compact horizontal cards with 36 px icon wells. Native
 
 Controls show hover, pressed, focus and disabled states. Loading, empty, validation error and populated states use real data. Transitions use opacity and transform, at most 200 ms. Honor prefers-reduced-motion. Restore and void actions require explicit confirmation. Dynamic QRIS never claims that payment has been verified.
 
+The shared application card restores a locally cached update result without a network request. For one hour after a GitHub response, the check button is disabled and a muted, clock-bearing note gives the next check time in local Indonesian date/time. Changelog and available-update installation remain usable during this cooldown. Expiry enables manual checking without fetching automatically; connection failures allow immediate retry.
+
 ## Accessibility
 
 Touch controls target 44 px. Inputs have labels and icon controls have accessible names. Keyboard focus is visible. Dialogs trap focus and support Escape. Semantic colors include text labels. Data remains readable on narrow phones and with large text.

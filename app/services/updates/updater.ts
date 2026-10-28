@@ -2,6 +2,7 @@ import { APP_VERSION } from "@/lib/version"
 import { App } from "@capacitor/app"
 import { Capacitor, registerPlugin } from "@capacitor/core"
 import ky from "ky"
+import { readCachedUpdate, writeCachedUpdate, type CachedUpdate } from "./cache"
 import {
   parseChecksum,
   RELEASE_REPOSITORY,
@@ -25,30 +26,77 @@ export async function installedVersion(): Promise<string> {
     ? (await App.getInfo()).version
     : APP_VERSION
 }
-export async function checkUpdate(): Promise<Release | null> {
+let pendingCheck: Promise<Release | null> | null = null
+export function checkUpdate(): Promise<Release | null> {
+  if (pendingCheck) return pendingCheck
+  pendingCheck = (async () => {
+    const cached = readCachedUpdate()
+    const result = cached ?? (await requestUpdate())
+    switch (result.result.kind) {
+      case "error":
+        throw new UpdateError(result.result.message)
+      case "release": {
+        const release = result.result.release
+        return release &&
+          versionCode(release.tag_name.slice(1)) >
+            versionCode(await installedVersion())
+          ? release
+          : null
+      }
+      default: {
+        const unreachable: never = result.result
+        return unreachable
+      }
+    }
+  })().finally(() => {
+    pendingCheck = null
+  })
+  return pendingCheck
+}
+
+async function requestUpdate(): Promise<CachedUpdate> {
   const response = await ky.get(
     "https://api.github.com/repos/" + RELEASE_REPOSITORY + "/releases/latest",
     {
       timeout: 15000,
-      retry: 1,
+      retry: { limit: 1, statusCodes: [408, 500, 502, 503, 504] },
       headers: { Accept: "application/vnd.github+json" },
       throwHttpErrors: false,
     },
   )
-  if (response.status === 404) return null
-  if (!response.ok)
-    throw new UpdateError(
-      response.status === 403
-        ? "Batas pemeriksaan GitHub tercapai. Coba lagi nanti."
-        : "GitHub tidak bisa diakses. Periksa koneksi dan coba lagi.",
-    )
-  const parsed = releaseSchema.safeParse(await response.json())
-  if (!parsed.success) throw new UpdateError("Data rilis tidak valid")
-  releaseAssets(parsed.data)
-  return versionCode(parsed.data.tag_name.slice(1)) >
-    versionCode(await installedVersion())
-    ? parsed.data
-    : null
+  let result: CachedUpdate["result"]
+  try {
+    if (response.status === 404) {
+      result = { kind: "release", release: null }
+    } else {
+      if (!response.ok)
+        throw new UpdateError(
+          response.status === 429 ||
+            (response.status === 403 &&
+              (response.headers.get("x-ratelimit-remaining") === "0" ||
+                response.headers.has("retry-after")))
+            ? "Batas pemeriksaan GitHub tercapai. Coba lagi setelah jeda pemeriksaan."
+            : "GitHub tidak bisa diakses. Coba lagi setelah jeda pemeriksaan.",
+        )
+      const parsed = releaseSchema.safeParse(await response.json())
+      if (!parsed.success) throw new UpdateError("Data rilis tidak valid")
+      releaseAssets(parsed.data)
+      result = { kind: "release", release: parsed.data }
+    }
+  } catch (error) {
+    if (error instanceof UpdateError || error instanceof SyntaxError)
+      result = {
+        kind: "error",
+        message:
+          error instanceof UpdateError
+            ? error.message
+            : "Data rilis tidak valid",
+      }
+    else throw error
+  }
+  const cached = { checkedAt: Date.now(), result }
+  writeCachedUpdate(cached)
+  return cached
 }
 export async function installUpdate(
   release: Release,

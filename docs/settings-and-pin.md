@@ -14,4 +14,4 @@ Product units are accessed beside Products in Home's store-management shortcuts.
 
 Enable PIN, restart, reject wrong PIN and unlock correctly. Restore business data while retaining target PIN and printer/device settings.
 
-Read the inline version and unchecked update status, open the bundled changelog, and check updates only on request. Dismiss the dialog with Escape, Close or Android Back; focus returns to the opener. Verify both themes and phone/tablet layouts, saved profile data and long store names at 320 pixels.
+Read the inline version and unchecked or fresh cached update status, open the bundled changelog, and check updates only on request. A completed GitHub response disables further checks for one hour and displays the next check time; fresh cached feedback survives reopening Settings/About and the app. Expiry never checks automatically. Dismiss the dialog with Escape, Close or Android Back; focus returns to the opener. Verify both themes and phone/tablet layouts, saved profile data and long store names at 320 pixels.

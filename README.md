@@ -44,7 +44,7 @@ Open Setelan → Cadangan data, export a ZIP and import it on the other device. 
 
 Stable tags must match package.json and a dated CHANGELOG.md section. See [Android release](docs/android-release.md) for signing secrets and release steps. The first release, v0.1.0, was published on October 27, 2026 by the tag workflow; future release tags are created explicitly.
 
-Update checks require internet and happen only when requested. Business features run offline. QRIS amount/CRC generation is local; settlement depends on the customer's payment provider and is confirmed manually in the app.
+Update checks require internet and happen only when requested. GitHub responses are cached locally for one hour, including limit errors; the check button shows the next check time and disables repeated requests during that period. Cached feedback survives reopening the app. Offline connection failures allow immediate retry. Business features run offline. QRIS amount/CRC generation is local; settlement depends on the customer's payment provider and is confirmed manually in the app.
 
 ## Documentation
 

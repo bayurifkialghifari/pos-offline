@@ -50,6 +50,23 @@ test("checks manually from the inline Settings version card", async ({
   await expect(card).toContainText("Tersedia " + newerTag)
   await expect(card).toContainText(newerRelease.body)
   expect(requests).toBe(1)
+  await expect(
+    card.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  await expect(card).toContainText("Cek lagi mulai")
+  await page.reload()
+  await expect(card).toContainText("Tersedia " + newerTag)
+  await expect(
+    card.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  expect(requests).toBe(1)
+  await page.goto("/settings/about")
+  await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  expect(requests).toBe(1)
+  await page.goto("/settings")
   await expect(page).toHaveURL(/settings$/)
 })
 
@@ -150,12 +167,31 @@ test("rejects a release whose assets are outside the configured repository", asy
 test("clears an earlier update offer after a failed recheck", async ({
   page,
 }) => {
+  const checkedAt = new Date("2026-10-28T06:00:00Z")
+  await page.clock.install({ time: checkedAt })
   await page.route(endpoint, (route) => route.fulfill({ json: newerRelease }))
   await page.goto("/settings")
   await page.getByRole("button", { name: "Cek pembaruan" }).click()
   await expect(page.getByRole("main")).toContainText("Tersedia " + newerTag)
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  await page.clock.fastForward(60 * 60 * 1000)
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeEnabled()
   await page.unroute(endpoint)
-  await page.route(endpoint, (route) => route.fulfill({ status: 403 }))
+  let requests = 0
+  await page.route(endpoint, (route) => {
+    requests++
+    return route.fulfill({
+      status: 403,
+      headers: {
+        "x-ratelimit-remaining": "0",
+        "access-control-expose-headers": "x-ratelimit-remaining",
+      },
+    })
+  })
   await page.getByRole("button", { name: "Cek pembaruan" }).click()
   await expect(page.getByRole("alert")).toContainText(
     "Batas pemeriksaan GitHub",
@@ -163,7 +199,51 @@ test("clears an earlier update offer after a failed recheck", async ({
   await expect(page.getByRole("main")).not.toContainText("Tersedia " + newerTag)
   await expect(
     page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  await page.reload()
+  await expect(page.getByRole("alert")).toContainText(
+    "Batas pemeriksaan GitHub",
+  )
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  expect(requests).toBe(1)
+})
+
+test("enables manual checking at expiry without a background request", async ({
+  page,
+}) => {
+  await page.clock.install({ time: new Date("2026-10-28T06:00:00Z") })
+  let requests = 0
+  await page.route(endpoint, (route) => {
+    requests++
+    return route.fulfill({ status: 404 })
+  })
+  await page.goto("/settings/about")
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(page.getByRole("status")).toContainText("Versi sudah terbaru")
+  await page.reload()
+  await expect(page.getByRole("status")).toContainText("Versi sudah terbaru")
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+
+  await page.clock.fastForward(60 * 60 * 1000 - 1000)
+
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  await page.clock.fastForward(1000)
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
   ).toBeEnabled()
+  await expect(page.locator("#update-cooldown")).toHaveCount(0)
+  expect(requests).toBe(1)
+  await page.getByRole("button", { name: "Cek pembaruan" }).click()
+  await expect(
+    page.getByRole("button", { name: "Cek pembaruan" }),
+  ).toBeDisabled()
+  expect(requests).toBe(2)
 })
 
 test("renders release HTML as text without executing it", async ({ page }) => {
