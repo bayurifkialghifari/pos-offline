@@ -86,6 +86,21 @@ This revision retains version 0.1.1 and records changes under Unreleased. No rel
 
 Task profiles use synthetic data and are separate from the user's browser. Screenshots, action logs and build output remain outside the repository.
 
+## Published v0.1.2 release — October 28, 2026
+
+The [prepared main-branch CI run](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40628435637) passed both quality and Android jobs on commit 976d2f8. Prettier, ESLint, Nuxt types, documentation validation, 40 Vitest tests, 4 Node script tests and all 34 browser checks passed. Static generation, Capacitor sync and the Android debug APK build passed on GitHub's Ubuntu runner.
+
+The [tag workflow](https://github.com/bayurifkialghifari/pos-offline/actions/runs/40628711334) passed the release checks, built and signed APK/AAB artifacts, verified the APK signature and published [v0.1.2](https://github.com/bayurifkialghifari/pos-offline/releases/tag/v0.1.2) from the same commit. The remote annotated tag resolves to 976d2f804e4fdfada0bd165a45802acbfca139b1. GitHub's latest-release endpoint returned v0.1.2 as a stable published release with all three expected assets.
+
+Downloaded artifacts match SHA256SUMS.txt, GitHub's asset digests and recorded byte sizes:
+
+| Asset                  |      Bytes | SHA-256                                                          |
+| ---------------------- | ---------: | ---------------------------------------------------------------- |
+| pos-offline-v0.1.2.apk | 16,124,071 | 7abbd5df497c088ec1cb26ed3bc7f71506f87cb6fae3de79cf3aee66201d02f1 |
+| pos-offline-v0.1.2.aab | 11,524,480 | 3fa3b429d44d573a9a0a4c0daa890ab6b4f256e4cec781c3af78d452a0761197 |
+
+The actual app release schema, asset selection and checksum parser accepted the published response and checksum file. Release notes match the dated changelog section exactly. APK manifest inspection confirmed com.karuhundeveloper.posoffline, version 0.1.2 and version code 1002, increasing from 1001 in the downloaded v0.1.1 APK. APK Signature Scheme v2 verification and AAB JAR signature verification passed. Both artifacts use the same RSA-4096 certificate as the published v0.1.1 APK, with SHA-256 609b43d755d3f3905c5a389ea61c579deaa5f3391b76a1fdf4f75950cd805a07.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.
