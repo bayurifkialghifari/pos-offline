@@ -4,6 +4,8 @@ All notable changes are recorded here. Releases follow Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-10-28
+
 ### Changed
 
 - Cache manual GitHub update results locally for one hour, including rate-limit and invalid-response feedback, and restore them when reopening the app.
