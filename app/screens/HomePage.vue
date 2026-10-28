@@ -81,7 +81,7 @@ onMounted(async () => {
         transaksi<ArrowUpRight aria-hidden="true" class="size-4"
       /></RouterLink>
     </header>
-    <StoreShortcuts v-if="isTablet" />
+    <StoreShortcuts />
     <p
       v-if="error"
       role="alert"
@@ -116,7 +116,6 @@ onMounted(async () => {
         </div>
       </div>
     </section>
-    <StoreShortcuts v-if="!isTablet" />
     <BackupCard />
   </div>
 </template>

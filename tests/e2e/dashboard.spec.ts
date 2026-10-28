@@ -25,11 +25,7 @@ for (const theme of ["light", "dark"] as const) {
         "Satuan produk",
       ])
       const sections = main.locator("section")
-      await expect(sections.first()).toContainText(
-        (page.viewportSize()?.width ?? 0) < 768
-          ? "Ringkasan hari ini"
-          : "Kelola toko",
-      )
+      await expect(sections.first()).toContainText("Kelola toko")
       await expect(sections.last()).toContainText("Cadangkan data")
       const backup = sections
         .last()

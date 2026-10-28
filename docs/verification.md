@@ -101,6 +101,16 @@ Downloaded artifacts match SHA256SUMS.txt, GitHub's asset digests and recorded b
 
 The actual app release schema, asset selection and checksum parser accepted the published response and checksum file. Release notes match the dated changelog section exactly. APK manifest inspection confirmed com.karuhundeveloper.posoffline, version 0.1.2 and version code 1002, increasing from 1001 in the downloaded v0.1.1 APK. APK Signature Scheme v2 verification and AAB JAR signature verification passed. Both artifacts use the same RSA-4096 certificate as the published v0.1.1 APK, with SHA-256 609b43d755d3f3905c5a389ea61c579deaa5f3391b76a1fdf4f75950cd805a07.
 
+## Home management order correction — October 28, 2026
+
+Home now renders store-management shortcuts once, directly after the header and above the daily summary at every width. Backup remains last. The correction is recorded under Unreleased with package version 0.1.2.
+
+Prettier, ESLint, Nuxt types, documentation validation, 40 Vitest tests, 4 Node script tests and static generation passed. All 4 existing dashboard browser checks passed on phone and desktop in both themes, including unit and backup navigation.
+
+Fresh manual browser captures cover Home at 390, 768, 1440 and 1920 CSS pixels in both themes, at top/end scroll positions. All 16 PNGs match recorded viewport dimensions and show management above the summary, backup last and no measured main-content overflow. An earlier capture attempt reset emulation on navigation; those incorrectly labelled screenshots are excluded. The final capture run reapplies emulation after navigation and verifies the actual width.
+
+Both independent reviewers failed to start with the same provider HTTP 404 described below. No independent-review approval, exhaustive accessibility audit or physical Android acceptance is claimed. The optional skill audit script requires TypeScript 7 unstable APIs unavailable in the project's installed TypeScript 5.9; the repository's normal lint and type checks passed.
+
 ## Limits and publication status
 
 Physical camera permission/teardown, Bluetooth/USB receipt delivery, Android system file pick/save, restart durability and APK installation/update acceptance remain untested on a physical Android device.
